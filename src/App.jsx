@@ -86,13 +86,8 @@ export default function App() {
       <div className="flex justify-between items-center px-10 py-6">
         <h1 className="text-green-400 font-bold text-xl">Seleciona+</h1>
 
-        <div className="flex gap-8 text-gray-400">
-          <span>Sobre</span>
-          <span>Como funciona</span>
-          <span>Contato</span>
-        </div>
-
-        <button className="border px-4 py-2 rounded-lg">Entrar</button>
+        
+        
       </div>
 
       {/* HOME */}
