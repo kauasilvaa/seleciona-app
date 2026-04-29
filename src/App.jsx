@@ -14,7 +14,8 @@ export default function App() {
     resumo: "",
     habilidades: "",
     email: "",
-    telefone: ""
+    telefone: "",
+    curriculo: "",
   });
 
   useEffect(() => {
@@ -235,6 +236,23 @@ export default function App() {
                 onChange={(e) => setForm({ ...form, telefone: e.target.value })}
               />
 
+              <input
+              type="file"
+              accept="application/pdf"
+              className="w-full p-3 mb-3 bg-slate-900 rounded text-gray-400"
+              onChange={(e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+
+              const reader = new FileReader();
+              reader.readAsDataURL(file);
+
+              reader.onload = () => {
+              setForm({ ...form, curriculo: reader.result });
+    };
+  }}
+/>
+
               <button
                 onClick={salvar}
                 className="w-full bg-green-500 py-3 rounded-lg text-black font-semibold"
@@ -322,69 +340,82 @@ export default function App() {
   </div>
 )}
 
-      {/* PERFIL */}
-      {page === "perfil" && selecionado && (
-        <div className="px-16 mt-10">
+     {/* PERFIL */}
+{page === "perfil" && selecionado && (
+  <div className="px-16 mt-10">
 
-          <button onClick={() => setPage("empresa")} className="text-green-400 mb-6">
-            ← Voltar
-          </button>
+    <button onClick={() => setPage("empresa")} className="text-green-400 mb-6">
+      ← Voltar
+    </button>
 
-          <div className="bg-slate-800 p-8 rounded-2xl flex gap-8">
+    <div className="bg-slate-800 p-8 rounded-2xl flex gap-8">
 
-            <img
-              src={gerarAvatar(selecionado.id)}
-              className="w-24 h-24 rounded-full border-2 border-green-500"
-            />
+      <img
+        src={gerarAvatar(selecionado.id)}
+        className="w-24 h-24 rounded-full border-2 border-green-500"
+      />
 
-            <div className="w-full">
+      <div className="w-full">
 
-              <h2 className="text-2xl font-bold">
-                CAND-{selecionado.id}
-              </h2>
+        <h2 className="text-2xl font-bold">
+          CAND-{selecionado.id}
+        </h2>
 
-              <p className="mt-4">{selecionado.resumo}</p>
+        <p className="mt-4">{selecionado.resumo}</p>
 
-              <p className="mt-4">
-                <strong>Habilidades:</strong> {selecionado.habilidades}
-              </p>
+        <p className="mt-4">
+          <strong>Habilidades:</strong> {selecionado.habilidades}
+        </p>
 
-              <div className="mt-6 p-4 bg-slate-900 rounded-lg">
+        {/* 🔥 BOTÃO DO CURRÍCULO (NOVO) */}
+        {selecionado.curriculo && (
+          <a
+            href={selecionado.curriculo}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-4 inline-block bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-600 transition"
+          >
+            📄 Ver Currículo (PDF)
+          </a>
+        )}
 
-                {!selecionado.contratado ? (
-                  <p className="text-gray-400">
-                    🔒 Dados ocultos
-                  </p>
-                ) : (
-                  <>
-                    <p>👤 {selecionado.nome}</p>
-                    <p>📧 {selecionado.email}</p>
-                    <p>📱 {selecionado.telefone}</p>
-                  </>
-                )}
+        <div className="mt-6 p-4 bg-slate-900 rounded-lg">
 
-              </div>
+          {!selecionado.contratado ? (
+            <p className="text-gray-400">
+              🔒 Dados ocultos
+            </p>
+          ) : (
+            <>
+              <p>👤 {selecionado.nome}</p>
+              <p>📧 {selecionado.email}</p>
+              <p>📱 {selecionado.telefone}</p>
+            </>
+          )}
 
-              {!selecionado.contratado && (
-                <button
-                  onClick={contratar}
-                  className="mt-6 bg-green-500 px-6 py-3 rounded-xl text-black font-bold"
-                >
-                  Contratar
-                </button>
-              )}
-
-              {selecionado.contratado && (
-                <p className="mt-6 text-green-400 font-bold">
-                  ✅ CONTRATADO
-                </p>
-              )}
-
-            </div>
-          </div>
         </div>
-      )}
 
+        {!selecionado.contratado && (
+          <button
+            onClick={contratar}
+            className="mt-6 bg-green-500 px-6 py-3 rounded-xl text-black font-bold"
+          >
+            Contratar
+          </button>
+        )}
+
+        {selecionado.contratado && (
+          <p className="mt-6 text-green-400 font-bold">
+            ✅ CONTRATADO
+          </p>
+        )}
+
+      </div>
     </div>
+  </div>
+)
+}
+</div>
+
   );
 }
